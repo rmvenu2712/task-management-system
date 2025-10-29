@@ -1,0 +1,163 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    /* Modern Kanban Design System - Trello Inspired */
+    --background: 210 100% 97%;
+    --foreground: 222 47% 11%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+
+    /* Trello Blue Primary */
+    --primary: 199 89% 48%;
+    --primary-foreground: 0 0% 100%;
+    
+    /* Soft purple accent */
+    --secondary: 270 50% 60%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
+
+    --accent: 270 50% 60%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    /* Priority Colors */
+    --priority-low: 199 89% 48%;
+    --priority-medium: 38 92% 50%;
+    --priority-high: 0 84% 60%;
+    --priority-none: 215 16% 47%;
+
+    /* Status Colors */
+    --status-todo: 199 89% 48%;
+    --status-progress: 38 92% 50%;
+    --status-done: 142 71% 45%;
+
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 199 89% 48%;
+
+    --radius: 0.75rem;
+
+    /* Gradients */
+    --gradient-start: 210 100% 97%;
+    --gradient-end: 199 100% 95%;
+
+    /* Shadows */
+    --shadow-card: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+    --shadow-card-hover: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 199 89% 48%;
+  }
+
+  .dark {
+    --background: 222 47% 11%;
+    --foreground: 210 40% 98%;
+
+    --card: 217 33% 17%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 217 33% 17%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 199 89% 48%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 270 50% 60%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 217 33% 17%;
+    --muted-foreground: 215 20% 65%;
+
+    --accent: 270 50% 60%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 210 40% 98%;
+
+    --priority-low: 199 89% 48%;
+    --priority-medium: 38 92% 50%;
+    --priority-high: 0 84% 60%;
+    --priority-none: 215 20% 65%;
+
+    --status-todo: 199 89% 48%;
+    --status-progress: 38 92% 50%;
+    --status-done: 142 71% 45%;
+
+    --border: 217 33% 17%;
+    --input: 217 33% 17%;
+    --ring: 199 89% 48%;
+
+    --gradient-start: 222 47% 11%;
+    --gradient-end: 217 33% 14%;
+
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 199 89% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 199 89% 48%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-gradient-to-br from-[hsl(var(--gradient-start))] to-[hsl(var(--gradient-end))] text-foreground min-h-screen;
+  }
+}
+
+@layer utilities {
+  .task-card {
+    @apply bg-card rounded-lg p-4 shadow-[var(--shadow-card)] transition-all duration-200 hover:shadow-[var(--shadow-card-hover)] cursor-grab active:cursor-grabbing;
+  }
+
+  .column-container {
+    @apply bg-muted/30 backdrop-blur-sm rounded-xl p-4 min-w-[300px] max-w-[300px];
+  }
+
+  .priority-badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+
+  .priority-low {
+    @apply bg-[hsl(var(--priority-low))]/10 text-[hsl(var(--priority-low))] border border-[hsl(var(--priority-low))]/20;
+  }
+
+  .priority-medium {
+    @apply bg-[hsl(var(--priority-medium))]/10 text-[hsl(var(--priority-medium))] border border-[hsl(var(--priority-medium))]/20;
+  }
+
+  .priority-high {
+    @apply bg-[hsl(var(--priority-high))]/10 text-[hsl(var(--priority-high))] border border-[hsl(var(--priority-high))]/20;
+  }
+
+  .priority-none {
+    @apply bg-muted/50 text-muted-foreground border border-border;
+  }
+}
