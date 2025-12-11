@@ -110,9 +110,9 @@ const Login = () => {
                   Remember me
                 </span>
               </label>
-              <a href="#" className="text-sm text-primary hover:underline">
+              {/* <a href="#" className="text-sm text-primary hover:underline">
                 Forgot password?
-              </a>
+              </a> */}
             </div>
 
             <Button type="submit" className="w-full h-12 text-base group">
