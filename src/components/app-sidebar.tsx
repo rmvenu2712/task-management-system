@@ -1,5 +1,5 @@
-import { Home, FolderKanban, BarChart3, User, Plus, Settings } from 'lucide-react';
-import { NavLink } from 'react-router-dom';
+import { Home, FolderKanban, BarChart3, User, Plus, Settings, LogOut } from 'lucide-react';
+import { NavLink, useNavigate } from 'react-router-dom';
 import {
   Sidebar,
   SidebarContent,
@@ -13,33 +13,44 @@ import {
   SidebarFooter,
 } from '@/components/ui/sidebar';
 import { useTaskStore } from '@/store/taskStore';
+import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { useState } from 'react';
 import { ProjectDialog } from './ProjectDialog';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import vLogo from "../../public/assets/venu-logo.png"
+import { useToast } from '@/hooks/use-toast';
+import vLogo from '../../public/assets/venu-logo.png';
 
 export function AppSidebar() {
-  const { projects, selectedProjectId, setSelectedProject, userProfile } = useTaskStore();
+  const { projects, selectedProjectId, setSelectedProject } = useTaskStore();
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+  const { toast } = useToast();
   const [projectDialogOpen, setProjectDialogOpen] = useState(false);
 
   const mainNavItems = [
-    { title: 'Dashboard', url: '/', icon: Home },
-    { title: 'Analytics', url: '/analytics', icon: BarChart3 },
+    { title: 'Dashboard', url: '/analytics', icon: BarChart3 },
+    { title: ' Task Manager', url: '/', icon: Home },
     { title: 'Profile', url: '/profile', icon: User },
   ];
+
+  const handleLogout = () => {
+    logout();
+    toast({
+      title: 'Logged out successfully',
+      description: 'See you soon! 👋',
+    });
+    navigate('/login');
+  };
 
   return (
     <Sidebar>
       <SidebarHeader className="border-b p-4">
         <div className="flex items-center gap-2">
-          <img src={vLogo} alt="vLogo" className='w-8'/>
-          {/* <div className="p-2 bg-primary rounded-lg">
-            <FolderKanban className="h-5 w-5 text-primary-foreground" />
-          </div> */}
+          <img src={vLogo} alt="TaskFlow Logo" className="w-8 h-8" />
           <div>
-            <h2 className="font-bold text-lg">TaskFlow </h2>
-            <p className="text-xs text-muted-foreground">Advanced PM</p>
+            <h2 className="font-bold text-lg">TaskFlow</h2>
+            {/* <p className="text-xs text-muted-foreground">Advanced PM</p> */}
           </div>
         </div>
       </SidebarHeader>
@@ -113,19 +124,27 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="border-t p-4">
-        <NavLink to="/profile" className="flex items-center gap-3 hover:bg-muted p-2 rounded-lg">
-          <Avatar className="h-8 w-8">
-            <AvatarFallback className="bg-primary text-primary-foreground">
-              {userProfile.name.charAt(0).toUpperCase()}
+      <SidebarFooter className="border-t p-4 space-y-2">
+        <div className="flex items-center gap-3 p-2 rounded-lg bg-muted/50">
+          <Avatar className="h-9 w-9">
+            <AvatarFallback className="bg-primary text-primary-foreground font-semibold">
+              {user?.name?.charAt(0).toUpperCase() || 'U'}
             </AvatarFallback>
           </Avatar>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium truncate">{userProfile.name}</p>
-            <p className="text-xs text-muted-foreground truncate">{userProfile.role}</p>
+            <p className="text-sm font-medium truncate">{user?.name || 'User'}</p>
+            <p className="text-xs text-muted-foreground truncate">{user?.email}</p>
           </div>
-          <Settings className="h-4 w-4 text-muted-foreground" />
-        </NavLink>
+        </div>
+        
+        <Button
+          variant="ghost"
+          className="w-full justify-start text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-950"
+          onClick={handleLogout}
+        >
+          <LogOut className="h-4 w-4 mr-2" />
+          Logout
+        </Button>
       </SidebarFooter>
 
       <ProjectDialog
