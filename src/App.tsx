@@ -28,71 +28,71 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
-      <AuthProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <Routes>
-              {/* Public Routes */}
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
+        <AuthProvider>
+          <TooltipProvider>
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
+              <Routes>
+                {/* Public Routes */}
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
 
-              {/* Protected Routes with Sidebar */}
-              <Route
-                path="/"
-                element={
-                  <ProtectedRoute>
-                    <SidebarProvider>
-                      <div className="flex min-h-screen w-full">
-                        <AppSidebar />
-                        <main className="flex-1">
-                          <Index />
-                        </main>
-                      </div>
-                    </SidebarProvider>
-                  </ProtectedRoute>
-                }
-              />
-              
-              <Route
-                path="/profile"
-                element={
-                  <ProtectedRoute>
-                    <SidebarProvider>
-                      <div className="flex min-h-screen w-full">
-                        <AppSidebar />
-                        <main className="flex-1">
-                          <Profile />
-                        </main>
-                      </div>
-                    </SidebarProvider>
-                  </ProtectedRoute>
-                }
-              />
+                {/* Protected Routes with Sidebar */}
+                <Route
+                  path="/"
+                  element={
+                    <ProtectedRoute>
+                      <SidebarProvider defaultOpen={true}>
+                        <div className="flex min-h-screen w-full">
+                          <AppSidebar />
+                          <main className="flex-1 overflow-auto">
+                            <Index />
+                          </main>
+                        </div>
+                      </SidebarProvider>
+                    </ProtectedRoute>
+                  }
+                />
+                
+                <Route
+                  path="/profile"
+                  element={
+                    <ProtectedRoute>
+                      <SidebarProvider defaultOpen={true}>
+                        <div className="flex min-h-screen w-full">
+                          <AppSidebar />
+                          <main className="flex-1 overflow-auto">
+                            <Profile />
+                          </main>
+                        </div>
+                      </SidebarProvider>
+                    </ProtectedRoute>
+                  }
+                />
 
-              <Route
-                path="/analytics"
-                element={
-                  <ProtectedRoute>
-                    <SidebarProvider>
-                      <div className="flex min-h-screen w-full">
-                        <AppSidebar />
-                        <main className="flex-1">
-                          <Analytics />
-                        </main>
-                      </div>
-                    </SidebarProvider>
-                  </ProtectedRoute>
-                }
-              />
+                <Route
+                  path="/analytics"
+                  element={
+                    <ProtectedRoute>
+                      <SidebarProvider defaultOpen={true}>
+                        <div className="flex min-h-screen w-full">
+                          <AppSidebar />
+                          <main className="flex-1 overflow-auto">
+                            <Analytics />
+                          </main>
+                        </div>
+                      </SidebarProvider>
+                    </ProtectedRoute>
+                  }
+                />
 
-              {/* Catch all - redirect to home */}
-              <Route path="*" element={<Navigate to="/" replace />} />
-            </Routes>
-          </BrowserRouter>
-        </TooltipProvider>
-      </AuthProvider>
+                {/* Catch all - redirect to home */}
+                <Route path="*" element={<Navigate to="/" replace />} />
+              </Routes>
+            </BrowserRouter>
+          </TooltipProvider>
+        </AuthProvider>
       </ThemeProvider>
     </QueryClientProvider>
   );

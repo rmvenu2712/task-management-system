@@ -14,7 +14,7 @@ import {
   DragOverEvent,
 } from '@dnd-kit/core';
 import { arrayMove, sortableKeyboardCoordinates } from '@dnd-kit/sortable';
-import { Plus, Filter } from 'lucide-react';
+import { Plus, Menu } from 'lucide-react';
 import { useTaskStore, Task } from '@/store/taskStore';
 import { TaskColumn } from '@/components/TaskColumn';
 import { TaskCard } from '@/components/TaskCard';
@@ -23,6 +23,7 @@ import { AddColumnDialog } from '@/components/AddColumnDialog';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { Badge } from '@/components/ui/badge';
+import { SidebarTrigger } from '@/components/ui/sidebar';
 
 const Index = () => {
   const { toast } = useToast();
@@ -68,14 +69,12 @@ const Index = () => {
 
     if (!activeTask) return;
 
-    // Check if dragging over a column
     const overColumn = columns.find((c) => c.id === overId);
     if (overColumn && activeTask.columnId !== overColumn.id) {
       const tasksInColumn = tasks.filter((t) => t.columnId === overColumn.id);
       moveTask(activeTask.id, overColumn.id, tasksInColumn.length);
     }
 
-    // Check if dragging over another task
     if (overTask && activeTask.columnId === overTask.columnId) {
       const columnTasks = tasks
         .filter((t) => t.columnId === activeTask.columnId)
@@ -184,37 +183,42 @@ const Index = () => {
     : null;
 
   return (
-    <div className="min-h-screen p-6">
+    <div className="min-h-screen p-4 md:p-6">
       <motion.header
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="mb-8"
+        className="mb-6 md:mb-8"
       >
         <div className="flex items-center justify-between max-w-7xl mx-auto">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 md:gap-3 flex-1 min-w-0">
+            {/* Mobile Menu Trigger */}
+            <SidebarTrigger className="md:hidden">
+              <Menu className="h-5 w-5" />
+            </SidebarTrigger>
+            
             {currentProject && (
               <div
-                className="h-3 w-3 rounded-full"
+                className="h-3 w-3 rounded-full flex-shrink-0"
                 style={{ backgroundColor: currentProject.color }}
               />
             )}
-            <div>
-              <h1 className="text-3xl font-bold text-foreground">
+            <div className="min-w-0 flex-1">
+              <h1 className="text-xl md:text-3xl font-bold text-foreground truncate">
                 {currentProject ? currentProject.name : 'All Projects'}
               </h1>
-              <p className="text-muted-foreground">
+              <p className="text-xs md:text-sm text-muted-foreground truncate">
                 {currentProject?.description || 'Manage tasks across all projects'}
               </p>
             </div>
             {currentProject && (
-              <Badge variant="secondary" className="ml-2">
+              <Badge variant="secondary" className="ml-2 hidden sm:inline-flex flex-shrink-0">
                 {filteredTasks.length} tasks
               </Badge>
             )}
           </div>
-          <Button onClick={() => setColumnDialogOpen(true)} className="gap-2">
+          <Button onClick={() => setColumnDialogOpen(true)} className="gap-2 ml-2 flex-shrink-0" size="sm">
             <Plus className="h-4 w-4" />
-            Add Column
+            <span className="hidden sm:inline">Add Column</span>
           </Button>
         </div>
       </motion.header>
@@ -226,13 +230,14 @@ const Index = () => {
         onDragOver={handleDragOver}
         onDragEnd={handleDragEnd}
       >
-        <div className="flex gap-6 overflow-x-auto pb-6 px-2">
+        <div className="flex gap-4 md:gap-6 overflow-x-auto pb-6 px-2">
           {sortedColumns.map((column, index) => (
             <motion.div
               key={column.id}
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: index * 0.1 }}
+              className="flex-shrink-0 w-80 sm:w-96"
             >
               <TaskColumn
                 column={column}

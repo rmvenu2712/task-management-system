@@ -19,15 +19,21 @@ const AuthContext = createContext<AuthContextType | null>(null);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+useEffect(() => {
+  const token = localStorage.getItem('token');
+  const userData = localStorage.getItem('user');
 
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    const userData = localStorage.getItem('user');
-    if (token && userData) {
-      setUser(JSON?.parse(userData));
+  if (token && userData) {
+    try {
+      setUser(JSON.parse(userData));
+    } catch (err) {
+      console.error("Failed to parse user data from localStorage", err);
+      setUser(null); // fallback
     }
-    setIsLoading(false);
-  }, []);
+  }
+
+  setIsLoading(false);
+}, []);
 
   const register = (name: string, email: string, password: string) => {
     const users = JSON.parse(localStorage.getItem('users') || '[]');
